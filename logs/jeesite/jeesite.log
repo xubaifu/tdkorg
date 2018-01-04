@@ -1,3 +1,0 @@
-2018-01-04 20:00:02,334 [http-bio-8181-exec-2] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findAllList] - ==>  Preparing: SELECT * FROM sys_dict WHERE del_flag = ? ORDER BY type, sort, update_date DESC 
-2018-01-04 20:00:02,343 [http-bio-8181-exec-2] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findAllList] - ==> Parameters: 0(String)
-2018-01-04 20:00:02,379 [http-bio-8181-exec-2] DEBUG [com.thinkgem.jeesite.modules.sys.dao.DictDao.findAllList] - <==      Total: 76

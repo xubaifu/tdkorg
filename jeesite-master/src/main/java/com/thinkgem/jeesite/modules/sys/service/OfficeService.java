@@ -38,8 +38,12 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	@Transactional(readOnly = true)
 	public List<Office> findList(Office office){
 		if(office != null){
-			office.setParentIds(office.getParentIds()+"%");
-			return dao.findByParentIdsLike(office);
+			String id ="%"+office.getId()+"%";
+			int grade = Integer.parseInt(office.getGrade())+1;
+			office.setId(id);
+			office.setGrade(String.valueOf(grade));
+			List<Office> list = dao.findByParentId(office);
+			return list;
 		}
 		return  new ArrayList<Office>();
 	}

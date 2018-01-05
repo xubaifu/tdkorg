@@ -3,6 +3,7 @@
 <html>
 <head>
 	<title>${fns:getConfig('productName')}</title>
+	<!-- <title>3A管理系统</title> -->
 	<meta name="decorator" content="blank"/><c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}"/>
     <c:if test="${tabmode eq '1'}"><link rel="Stylesheet" href="${ctxStatic}/jerichotab/css/jquery.jerichotab.css" />
     <script type="text/javascript" src="${ctxStatic}/jerichotab/js/jquery.jerichotab.js"></script></c:if>
@@ -143,6 +144,33 @@
             }).loadData(refresh);
 			return false;
 		}// </c:if>
+		
+		//退出（注销并关闭页面）
+		function exitFun(){
+			//$("#exitForm").submit();
+			var userAgent = navigator.userAgent;
+			if (userAgent.indexOf("Firefox") != -1 || userAgent.indexOf("Chrome") !=-1) {
+			   window.location.href="about:blank";
+			}else if(userAgent.indexOf('Android') > -1 || userAgent.indexOf('Linux') > -1){
+			   window.opener=null;window.open('about:blank','_self','').close();
+			}else {
+			   window.opener = null;
+			   window.open("about:blank", "_self");
+			   window.close();
+			}
+			$.ajax({
+				type : "POST",
+				dataType : "json",
+				data : {},
+				url : "/3A/a/logout" ,
+				async : true,
+				success : function(data) {
+				}
+				
+			});
+			
+		}
+		
 	</script>
 </head>
 <body>
@@ -150,8 +178,9 @@
 		<div id="header" class="navbar navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="brand"><span id="productName">${fns:getConfig('productName')}</span></div>
+				<!-- <div class="brand"><span id="productName">3A管理系统</span></div> -->
 				<ul id="userControl" class="nav pull-right">
-					<li><a href="${pageContext.request.contextPath}${fns:getFrontPath()}/index-${fnc:getCurrentSiteId()}.html" target="_blank" title="访问网站主页"><i class="icon-home"></i></a></li>
+					<%-- <li><a href="${pageContext.request.contextPath}${fns:getFrontPath()}/index-${fnc:getCurrentSiteId()}.html" target="_blank" title="访问网站主页"><i class="icon-home"></i></a></li> --%>
 					<li id="themeSwitch" class="dropdown">
 						<a class="dropdown-toggle" data-toggle="dropdown" href="#" title="主题切换"><i class="icon-th-large"></i></a>
 						<ul class="dropdown-menu">
@@ -165,11 +194,14 @@
 						<ul class="dropdown-menu">
 							<li><a href="${ctx}/sys/user/info" target="mainFrame"><i class="icon-user"></i>&nbsp; 个人信息</a></li>
 							<li><a href="${ctx}/sys/user/modifyPwd" target="mainFrame"><i class="icon-lock"></i>&nbsp;  修改密码</a></li>
-							<li><a href="${ctx}/oa/oaNotify/self" target="mainFrame"><i class="icon-bell"></i>&nbsp;  我的通知 <span id="notifyNum2" class="label label-info hide"></span></a></li>
+							<%-- <li><a href="${ctx}/oa/oaNotify/self" target="mainFrame"><i class="icon-bell"></i>&nbsp;  我的通知 <span id="notifyNum2" class="label label-info hide"></span></a></li> --%>
 						</ul>
 					</li>
-					<li><a href="${ctx}/logout" title="退出登录">退出</a></li>
-					<li>&nbsp;</li>
+					<li><a href="${ctx}/logout" title="注销系统">注销</a></li>
+					<li><a href="javascript:exitFun();" title="退出登录" >退出</a></li>
+					<form:form id="exitForm" modelAttribute="area" action="${ctx}/logout" method="post">
+					</form:form>
+					<!-- <li>&nbsp;</li> -->
 				</ul>
 				<%-- <c:if test="${cookie.theme.value eq 'cerulean'}">
 					<div id="user" style="position:absolute;top:0;right:0;"></div>
@@ -222,7 +254,7 @@
 				</div>
 			</div>
 		    <div id="footer" class="row-fluid">
-	            Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By <a href="http://jeesite.com" target="_blank">JeeSite</a> ${fns:getConfig('version')}
+	            Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')} - Powered By TDK-3A
 			</div>
 		</div>
 	</div>

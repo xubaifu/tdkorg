@@ -24,9 +24,9 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'0'}},
+		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'-1'}},
 			callback:{onClick:function(event, treeId, treeNode){
-					var id = treeNode.id == '0' ? '' :treeNode.id;
+					var id = treeNode.id == '-1' ? '' :treeNode.id;
 					$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
 				}
 			}
@@ -34,7 +34,7 @@
 		
 		function refreshTree(){
 			$.getJSON("${ctx}/sys/office/treeData",function(data){
-				$.fn.zTree.init($("#ztree"), setting, data).expandAll(true);
+				$.fn.zTree.init($("#ztree"), setting, data).expandAll(false);//默认收取，若默认展开所有树结构则改为true;
 			});
 		}
 		refreshTree();

@@ -76,9 +76,18 @@
 		FROM sys_office a
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
-		ORDER BY a.code
+		ORDER BY a.id
 	</select>
 	
+	<select id="findByParentId" resultType="Office">
+		SELECT
+			<include refid="officeColumns"/>
+		FROM sys_office a
+		<include refid="officeJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.id like  #{id} and a.grade &lt;= #{grade}
+		ORDER BY a.id
+	</select>
+   
 	<insert id="insert">
 		INSERT INTO sys_office(
 			id, 

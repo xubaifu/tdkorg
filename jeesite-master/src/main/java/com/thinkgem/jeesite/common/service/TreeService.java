@@ -28,7 +28,7 @@ public abstract class TreeService<D extends TreeDao<T>, T extends TreeEntity<T>>
 		
 		// 如果没有设置父节点，则代表为跟节点，有则获取父节点实体
 		if (entity.getParent() == null || StringUtils.isBlank(entity.getParentId()) 
-				|| "0".equals(entity.getParentId())){
+				|| "-1".equals(entity.getParentId())){
 			entity.setParent(null);
 		}else{
 			entity.setParent(super.get(entity.getParentId()));
@@ -36,7 +36,7 @@ public abstract class TreeService<D extends TreeDao<T>, T extends TreeEntity<T>>
 		if (entity.getParent() == null){
 			T parentEntity = null;
 			try {
-				parentEntity = entityClass.getConstructor(String.class).newInstance("0");
+				parentEntity = entityClass.getConstructor(String.class).newInstance("-1");
 			} catch (Exception e) {
 				throw new ServiceException(e);
 			}

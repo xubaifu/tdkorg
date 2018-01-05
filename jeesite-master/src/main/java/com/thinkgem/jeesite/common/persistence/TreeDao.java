@@ -26,5 +26,11 @@ public interface TreeDao<T extends TreeEntity<T>> extends CrudDao<T> {
 	 * @return
 	 */
 	public int updateParentIds(T entity);
+	/**
+	 * 找到所有子节点
+	 * @param entity
+	 * @return
+	 */
+	public List<T> findByParentId(T entity);
 	
 }

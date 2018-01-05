@@ -46,7 +46,7 @@ public class OfficeController extends BaseController {
 		if (StringUtils.isNotBlank(id)){
 			return officeService.get(id);
 		}else{
-			return new Office();
+			return officeService.get("0");
 		}
 	}
 
@@ -67,6 +67,12 @@ public class OfficeController extends BaseController {
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = "form")
 	public String form(Office office, Model model) {
+		System.out.println(office.getType());
+		if("add".equals(office.getType())){
+			office = new Office();
+			model.addAttribute("office", office);
+			return "modules/sys/officeForm";
+		}
 		User user = UserUtils.getUser();
 		if (office.getParent()==null || office.getParent().getId()==null){
 			office.setParent(user.getOffice());
@@ -86,7 +92,7 @@ public class OfficeController extends BaseController {
 					size++;
 				}
 			}
-			office.setCode(office.getParent().getCode() + StringUtils.leftPad(String.valueOf(size > 0 ? size+1 : 1), 3, "0"));
+			office.setCode(office.getParent().getCode() + StringUtils.leftPad(String.valueOf(size > 0 ? size+1 : 1), 3, "-1"));
 		}
 		model.addAttribute("office", office);
 		return "modules/sys/officeForm";

@@ -24,17 +24,17 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'0'}},
+		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'-1'}},
 			callback:{onClick:function(event, treeId, treeNode){
-					var id = treeNode.pId == '0' ? '' :treeNode.pId;
-					$('#officeContent').attr("src","${ctx}/sys/office/list?id="+id+"&parentIds="+treeNode.pIds);
+					//var id = treeNode.pId == '-1' ? '' :treeNode.pId;
+					$('#officeContent').attr("src","${ctx}/sys/office/list?id="+treeNode.id+"&parentIds="+treeNode.pIds);
 				}
 			}
 		};
 		
 		function refreshTree(){
 			$.getJSON("${ctx}/sys/office/treeData",function(data){
-				$.fn.zTree.init($("#ztree"), setting, data).expandAll(true);
+				$.fn.zTree.init($("#ztree"), setting, data).expandAll(false);//默认收取，若默认展开所有树结构则改为true;
 			});
 		}
 		refreshTree();

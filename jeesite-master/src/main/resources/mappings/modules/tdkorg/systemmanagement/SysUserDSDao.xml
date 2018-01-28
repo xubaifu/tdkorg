@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.tdkorg.systemmanagement.dao.SysUserDSDao">
+    <select id="getAllUser" resultType="SysUserDSEntity">
+		select 
+			A0100 as A0100,
+			A0101 as A0101, 
+			E0122 as E0122, 
+			E0127 as E0127, 
+			CreateTime as CreateTime,
+			C01UG as C01UG
+		from [ykchr].[dbo].[UsrA01]
+	</select>
+	
+	<select id="getUserById" resultType="SysUserDSEntity">
+		select count(0) as num from SYS_user where no = #{no}
+	</select>
+	
+	
+	<insert id="addUser">
+		INSERT INTO sys_user(
+			id,
+			company_id,
+			office_id,
+			login_name,
+			password,
+			no,
+			name,
+			email,
+			phone,
+			mobile,
+			user_type,
+			photo,
+			login_ip,
+			login_date,
+			login_flag,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			KQ_ID,
+			door_id,
+			food_id,
+			kq_detail_id
+		) VALUES (
+			REPLACE(UUID(),'-',''),
+			0,
+			#{officeId},
+			#{loginName},
+			#{password},<!-- 'admin', -->
+			#{no},
+			#{name},
+			#{email},
+			#{phone},
+			#{mobile},
+			#{userType},
+			#{photo},
+			#{loginIp},
+			#{loginDate},
+			1,
+			1,
+			now(),<!-- DATE_FORMAT(substr(#{createTime},0,19),'%Y-%m-%d %H:%i:%S'), -->
+			1,
+			now(),
+			#{remarks},
+			0,
+			#{KQID},
+			0,<!-- (select IFNULL(max(CAST(door_id AS SIGNED)),0)+1 from sys_user), -->
+			0,<!-- (select IFNULL(max(CAST(food_id AS SIGNED)),0)+1 from sys_user), -->
+			#{kqDetailId}
+		)
+	</insert>
+	
+	<update id="updateUser">
+		UPDATE sys_user SET 	
+			company_id = 0,
+			office_id = #{officeId},
+			login_name = #{loginName},
+			<!-- password = #{password}, -->
+			no = #{no},
+			name = #{name},
+			email = #{email},
+			phone = #{phone},
+			mobile = #{mobile},
+			user_type = #{userType},
+			photo = #{photo},
+			login_ip = #{loginIp},
+			login_date = #{loginDate},
+			login_flag = 1,
+			update_by = '1',
+			update_date = now(),
+			remarks = #{remarks},
+			KQ_ID = #{KQID},
+			kq_detail_id = #{kqDetailId}
+		WHERE no = #{no}
+	</update>
+	
+	
+	<update id="deleteUser">
+		UPDATE sys_user SET 	
+			del_flag = '1'
+		WHERE no = #{no} and id != '1'
+	</update>
+	
+	<select id="getAllUserByUpdate" resultType="SysUserDSEntity">
+		select * from sys_user where update_date &lt; date_format(now(),'%y-%m-%d')
+	</select>
+</mapper>
